@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import * as uuid from "uuid/v4";
 import { BookModel, BookRequiredProps } from "../models";
+import { timer } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 const BASE_URL = "http://localhost:3000/books";
 const HEADER = {
@@ -44,6 +46,8 @@ export class BooksService {
   }
 
   delete(id: string) {
-    return this.http.delete(`${BASE_URL}/${id}`);
+    return timer(3000).pipe(
+      mergeMap(() => this.http.delete(`${BASE_URL}/${id}`))
+    )
   }
 }
